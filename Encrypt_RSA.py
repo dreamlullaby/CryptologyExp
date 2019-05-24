@@ -28,8 +28,16 @@ def finde(r):
         if gcd(i,r)==1:
             return i
             break
+def isprime(num):
+    if num==2:
+        return True
+    else:
+        for i in range(2,int(math.sqrt(num))):
+            if num%i==0:
+                return False
+    return True
 
-def proBin(w):  # w表示希望产生位数
+def genrandbits(w):  # w表示希望产生位数
     list = []
     list.append('1')  #最高位定为1
     for i in range(w - 2):
@@ -40,11 +48,24 @@ def proBin(w):  # w表示希望产生位数
     res = int(''.join(list),2)
     return res
 
+def genbigprime(w):
+    bigprime=genrandbits(w)
+    while not isprime(bigprime):
+        bigprime=genrandbits(w)
+        for i in range(50):
+            bigprime=bigprime+2*i
+            if isprime(bigprime):
+                return bigprime
+                break
+            else:
+                continue
+    return bigprime
+
 def findsk(e):
     r=e
     while(gcd(e,r)!=1):
-        p=proBin(16)
-        q=proBin(16)
+        p=genbigprime(16)
+        q=genbigprime(16)
         r=(p-1)*(q-1)
     sk=[]
     sk.append(p)
@@ -53,17 +74,27 @@ def findsk(e):
     sk.append(r)
     return sk
 
+#p=genbigprime(16)
+#print(p)
+def fastpow(a,m,n):
+    result=1
+    buffer=[]
+    while m!=0:
+        buffer.append(m%2)
+        m=int(m/2)
+    while buffer:
+        rem=buffer.pop()
+        result=((a**rem)*result**2)%n     
+    return result
 
-
-
-n=919293
-e=5
-sk=findsk(e)
-d=getInverse(e,sk[3])
+n=919293                        #abc的ascii码对应值
+e=5                             #公钥e
+sk=findsk(e)                    #生成私钥
+d=getInverse(e,sk[3])           #求
 sk.append(d)
 N=sk[0]*sk[1]
 c=(pow(n,e))%N
 print(c)
 print(sk)
-m=(pow(c,d))%N
+m=fastpow(c,d,N)
 print(m)
