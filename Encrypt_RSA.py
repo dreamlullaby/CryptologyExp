@@ -1,7 +1,6 @@
 import math
 import numpy
 
-
 def gcd(a,b):
     if a%b == 0:
         return b
@@ -27,7 +26,6 @@ def finde(r):
     for i in range(2,int(r/2)):
         if gcd(i,r)==1:
             return i
-            break
 def isprime(num):
     if num==2:
         return True
@@ -37,13 +35,13 @@ def isprime(num):
                 return False
     return True
 
-def genrandbits(w):  # w表示希望产生位数
+def genrandbits(w):  # w表示产生位数
     list = []
-    list.append('1')  #最高位定为1
+    list.append('1')  
     for i in range(w - 2):
         c = numpy.random.choice(['0', '1'])
         list.append(c)
-    list.append('1') # 最低位定为1
+    list.append('1') 
     print(list)
     res = int(''.join(list),2)
     return res
@@ -56,7 +54,6 @@ def genbigprime(w):
             bigprime=bigprime+2*i
             if isprime(bigprime):
                 return bigprime
-                break
             else:
                 continue
     return bigprime
@@ -87,14 +84,17 @@ def fastpow(a,m,n):
         result=((a**rem)*result**2)%n     
     return result
 
-n=919293                        #abc的ascii码对应值
+m=919293                        #abc的ascii码对应值
 e=5                             #公钥e
 sk=findsk(e)                    #生成私钥
-d=getInverse(e,sk[3])           #求
+d=getInverse(e,sk[3])           #求e模r的逆
 sk.append(d)
-N=sk[0]*sk[1]
-c=(pow(n,e))%N
-print(c)
-print(sk)
-m=fastpow(c,d,N)
-print(m)
+n=sk[0]*sk[1]
+c=(pow(m,e))%n
+message=fastpow(c,d,n)
+pk=[e,n]
+sk=[d,sk[0],sk[1]]
+print("初始明文为919293")
+print("公钥public key:{},私钥secret key:{}".format(pk,sk))
+print("加密所得密文为：%s"%c)
+print("解密得到明文%s"%message)

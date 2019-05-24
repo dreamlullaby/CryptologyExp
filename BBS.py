@@ -1,7 +1,7 @@
 import math
 import random
 import numpy
-def isprime(num):
+def isprime(num):   #判断素数
     if num==2:
         return True
     else:
@@ -10,7 +10,7 @@ def isprime(num):
                 return False
     return True
 
-def genrandbits(w):  # w表示希望产生位数
+def genrandbits(w):  # w表示的2进制序列位数
     list = []
     list.append('1')  #最高位定为1
     for i in range(w - 2):
@@ -21,7 +21,7 @@ def genrandbits(w):  # w表示希望产生位数
     res = int(''.join(list),2)
     return res
 
-def genbigprime(w):
+def genbigprime(w):         #生成w位大素数
     bigprime=genrandbits(w)
     while not isprime(bigprime):
         bigprime=genrandbits(w)
@@ -33,13 +33,13 @@ def genbigprime(w):
                 continue
     return bigprime
 
-def gcd(a,b):
+def gcd(a,b):               #求a,b最大公因数
     if a%b == 0:
         return b
     else :
         return gcd(b,a%b)
 
-def gen_n(w):
+def gen_n(w):               #生成n
     p=1
     q=1
     while(p%4!=3):
@@ -48,12 +48,12 @@ def gen_n(w):
        q=genbigprime(w)
     return p*q
 
-def finds(n):
+def finds(n):               #找到随机数s与n互素
     s=random.randint(2,int(math.sqrt(n)))
     while(gcd(s,n)!=1):
         s=random.randint(2,int(math.sqrt(n)))
     return s
-def bbs(n,s):
+def bbs(n,s):               #生成随即二进制序列
     x=pow(s,2,n)
     b=[]
     count=20
@@ -62,6 +62,7 @@ def bbs(n,s):
         b.append(x%2)
         count=count-1
     return b
+
 n=gen_n(16)
 s=finds(n)
 bitset=bbs(n,s)
