@@ -84,17 +84,17 @@ def fastpow(a,m,n):
         result=((a**rem)*result**2)%n     
     return result
 
-m=919293                        #abc的ascii码对应值
+raw_message=919293              #abc的ascii码对应值
 e=5                             #公钥e
 sk=findsk(e)                    #生成私钥
 d=getInverse(e,sk[3])           #求e模r的逆
 sk.append(d)
 n=sk[0]*sk[1]
-c=(pow(m,e))%n
+c=(pow(raw_message,e))%n
 message=fastpow(c,d,n)
 pk=[e,n]
 sk=[d,sk[0],sk[1]]
-print("初始明文为919293")
+print("初始明文为",raw_message)
 print("公钥public key:{},私钥secret key:{}".format(pk,sk))
 print("加密所得密文为：%s"%c)
 print("解密得到明文%s"%message)
